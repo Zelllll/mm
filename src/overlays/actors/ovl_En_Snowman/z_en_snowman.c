@@ -302,9 +302,9 @@ void EnSnowman_Update(Actor* thisx, GlobalContext* globalCtx) {
             CollisionCheck_SetOC(globalCtx, &globalCtx->colCheckCtx, &this->collider.base);
 
             if (this->actor.draw == EnSnowman_Draw) {
-                Actor_SetHeight(thisx, this->actor.scale.y * 1800.0f);
+                Actor_SetHeight(&this->actor, this->actor.scale.y * 1800.0f);
             } else {
-                Actor_SetHeight(thisx, this->actor.scale.y * 720.0f);
+                Actor_SetHeight(&this->actor, this->actor.scale.y * 720.0f);
             }
 
             if (this->effAlpha > 0.0f) {
@@ -328,7 +328,7 @@ void EnSnowman_Draw(Actor* thisx, GlobalContext* globalCtx) {
     func_8012C28C(globalCtx->state.gfxCtx);
     SkelAnime_DrawSV(globalCtx, this->skelAnime.skeleton, this->skelAnime.limbDrawTbl, this->skelAnime.dListCount, NULL,
                      func_80B19718, &this->actor);
-    func_800BE680(globalCtx, &this->actor, &this->unk_2C0, ARRAY_COUNT(this->unk_2C0), this->effScale * this->unk_294,
+    func_800BE680(globalCtx, &this->actor, this->unk_2C0, ARRAY_COUNT(this->unk_2C0), this->effScale * this->unk_294,
                   0.0f, this->effAlpha, this->effType);
 }
 
