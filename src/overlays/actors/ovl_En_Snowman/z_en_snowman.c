@@ -81,8 +81,7 @@ void EnSnowman_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.params &= 7;
 
     if (this->actor.params < 3) {
-        SkelAnime_InitSV(globalCtx, &this->skelAnime, &D_060045A0, &D_0600554C, this->jointTable, this->morphTable,
-                         12);
+        SkelAnime_InitSV(globalCtx, &this->skelAnime, &D_060045A0, &D_0600554C, this->jointTable, this->morphTable, 12);
         SkelAnime_InitSV(globalCtx, &this->skelAnime2, &D_06004A90, &D_060046D8, this->jointTable2, this->morphTable2,
                          3);
         CollisionCheck_SetInfo(&this->actor.colChkInfo, sDamageTable, &sColChkInfoInit);
@@ -173,7 +172,7 @@ void EnSnowman_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-void EnSnowman_Destroy(Actor *thisx, GlobalContext *globalCtx) {
+void EnSnowman_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     EnSnowman* this = THIS;
 
     Collider_DestroyCylinder(globalCtx, &this->collider);
@@ -256,8 +255,7 @@ void func_80B18A04(EnSnowman* this, GlobalContext* globalCtx);
 void func_80B18F50(EnSnowman* this, GlobalContext* globalCtx);
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B18F50.asm")
 
-// #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/EnSnowman_Update.asm")
-void EnSnowman_Update(Actor *thisx, GlobalContext *globalCtx) {
+void EnSnowman_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnSnowman* this = THIS;
     s32 pad;
     f32 wallCheckRadius;
@@ -269,10 +267,10 @@ void EnSnowman_Update(Actor *thisx, GlobalContext *globalCtx) {
 
         func_80B18F50(this, globalCtx);
         this->actionFunc(this, globalCtx);
-        
+
         if (this->actionFunc != func_80B18A04) {
             Actor_SetVelocityAndMoveYRotationAndGravity(&this->actor);
-            
+
             if ((this->actor.params == 1) && (this->actionFunc == func_80B17A58)) {
                 wallCheckRadius = (this->skelAnime.animCurrentFrame * 0.016666668f) + 1.0f;
                 wallCheckRadius = CLAMP_MAX(wallCheckRadius, 1.3f);
@@ -285,9 +283,10 @@ void EnSnowman_Update(Actor *thisx, GlobalContext *globalCtx) {
 
             if ((this->actor.floorPoly != NULL) && ((this->actor.floorPoly->normal.y * 0.00003051851f) < 0.7f)) {
                 Math_Vec3f_Copy(&this->actor.world.pos, &this->actor.prevPos);
-                
+
                 if (this->unk_28A == 0) {
-                    this->aimAngleY = Math_FAtan2F(this->actor.floorPoly->normal.z * 0.00003051851f, this->actor.floorPoly->normal.x * 0.00003051851f);
+                    this->aimAngleY = Math_FAtan2F(this->actor.floorPoly->normal.z * 0.00003051851f,
+                                                   this->actor.floorPoly->normal.x * 0.00003051851f);
                     this->unk_28A = 1;
                 }
             } else {
@@ -295,13 +294,13 @@ void EnSnowman_Update(Actor *thisx, GlobalContext *globalCtx) {
             }
 
             Collider_UpdateCylinder(&this->actor, &this->collider);
-            
+
             if (this->collider.base.acFlags & 1) {
                 CollisionCheck_SetAC(globalCtx, &globalCtx->colCheckCtx, &this->collider.base);
             }
 
             CollisionCheck_SetOC(globalCtx, &globalCtx->colCheckCtx, &this->collider.base);
-            
+
             if (this->actor.draw == EnSnowman_Draw) {
                 Actor_SetHeight(thisx, this->actor.scale.y * 1800.0f);
             } else {
@@ -320,9 +319,18 @@ void EnSnowman_Update(Actor *thisx, GlobalContext *globalCtx) {
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B19474.asm")
 
+void func_80B19718();
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B19718.asm")
 
-#pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/EnSnowman_Draw.asm")
+void EnSnowman_Draw(Actor* thisx, GlobalContext* globalCtx) {
+    EnSnowman* this = THIS;
+
+    func_8012C28C(globalCtx->state.gfxCtx);
+    SkelAnime_DrawSV(globalCtx, this->skelAnime.skeleton, this->skelAnime.limbDrawTbl, this->skelAnime.dListCount, NULL,
+                     func_80B19718, &this->actor);
+    func_800BE680(globalCtx, &this->actor, &this->unk_2C0, ARRAY_COUNT(this->unk_2C0), this->effScale * this->unk_294,
+                  0.0f, this->effAlpha, this->effType);
+}
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B19948.asm")
 

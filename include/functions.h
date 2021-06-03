@@ -913,7 +913,7 @@ void func_800BE3D0(Actor* actor, s16 angle, ActorShape* shape);
 // void func_800BE568(void);
 // void func_800BE5CC(void);
 // void func_800BE63C(void);
-// void func_800BE680(UNK_TYPE1 param_1, UNK_TYPE1 param_2, UNK_TYPE1 param_3, UNK_TYPE1 param_4, UNK_TYPE4 param_5, UNK_TYPE4 param_6, UNK_TYPE4 param_7, UNK_TYPE1 param_8);
+void func_800BE680(GlobalContext** globalCtx, Actor* this, Vec3f* pos, s16 max, f32 scale, f32 scale2, f32 alpha, u8 type);
 // void func_800BF7CC(UNK_TYPE1 param_1, UNK_TYPE1 param_2, UNK_TYPE1 param_3, UNK_TYPE1 param_4, UNK_TYPE4 param_5, UNK_TYPE4 param_6, UNK_TYPE4 param_7);
 void ActorOverlayTable_FaultPrint(void* arg0, void* arg1); // ActorOverlayTable_FaultPrint
 void* ActorOverlayTable_FaultAddrConv(void* arg0, void* arg1); // ActorOverlayTable_FaultAddrConv
