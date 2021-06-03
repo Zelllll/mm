@@ -6547,7 +6547,7 @@ SECTIONS
     ovl_En_Snowman : AT(RomLocation)
     {
         build/src/overlays/actors/ovl_En_Snowman/z_en_snowman.o(.text)
-        build/asm/overlays/ovl_En_Snowman_data.o(.data)
+        build/src/overlays/actors/ovl_En_Snowman/z_en_snowman.o(.data)
         build/src/overlays/actors/ovl_En_Snowman/z_en_snowman.o(.rodata)
         build/asm/overlays/ovl_En_Snowman_rodata.o(.rodata)
     }

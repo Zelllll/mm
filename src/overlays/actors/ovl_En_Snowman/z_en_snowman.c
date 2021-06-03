@@ -9,7 +9,6 @@ void EnSnowman_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void EnSnowman_Update(Actor* thisx, GlobalContext* globalCtx);
 void EnSnowman_Draw(Actor* thisx, GlobalContext* globalCtx);
 
-/*
 const ActorInit En_Snowman_InitVars = {
     ACTOR_EN_SNOWMAN,
     ACTORCAT_ENEMY,
@@ -21,7 +20,50 @@ const ActorInit En_Snowman_InitVars = {
     (ActorFunc)EnSnowman_Update,
     (ActorFunc)EnSnowman_Draw,
 };
-*/
+
+u32 sCylinderInit[] = {
+    0x04000939, 0x10010000, 0x00000000, 0x00000000, 0x00000000, 0xF7CFFFFF,
+    0x00000000, 0x00050100, 0x003C0050, 0x00000000, 0x00000000,
+};
+
+u32 sSnowballCylinderInit[] = {
+    0x0A110938, 0x10010000, 0x00000000, 0xF7CFFFFF, 0x00040000, 0xF7CFFFFF,
+    0x00000000, 0x19010100, 0x003C0050, 0x00000000, 0x00000000,
+};
+
+DamageTable sDamageTable[] = {
+    0x10, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0xF1, 0x02, 0x01, 0x01, 0x22, 0x01, 0x42, 0x01, 0x10,
+    0x01, 0x02, 0x10, 0x50, 0x00, 0x00, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+};
+
+CollisionCheckInfoInit sColChkInfoInit = { 2, 60, 80, 150 };
+
+Color_RGBA8 sPrimColor = { 250, 250, 250, 255 };
+
+Color_RGBA8 sEnvColor = { 180, 180, 180, 255 };
+
+Vec3f sSnowVec = { 0.0f, 1.5f, 0.0f };
+
+Gfx* D_80B19A94[] = { 0x06004400, 0x060010B0, 0x06004400 };
+
+Gfx* D_80B19AA0[] = { 0x06005CB0, 0x06006190, 0x06006620 };
+
+InitChainEntry sInitChain[] = {
+    ICHAIN_S8(hintId, 20, ICHAIN_CONTINUE),
+    ICHAIN_F32(targetArrowOffset, 3000, ICHAIN_CONTINUE),
+    ICHAIN_F32_DIV1000(gravity, -1000, ICHAIN_STOP),
+};
+
+Vec3f accel0 = { 0.0f, -1.0f, 0.0f };
+
+Vec3f accel1 = { 0.0f, -0.5f, 0.0f };
+
+s8 D_80B19AD0[] = { -1, -1, -1, -1, -1, -1, 0, 1, -1, 2, 3, 4 };
+
+Vec3f D_80B19ADC[] = {
+    { 2000.0f, 3000.0f, 0.0f }, { 2000.0f, -2000.0f, 0.0f }, { 3000.0f, 0.0f, 0.0f },
+    { 1000.0f, 0.0f, 3000.0f }, { 1000.0f, 0.0f, -3000.0f },
+};
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/EnSnowman_Init.asm")
 
