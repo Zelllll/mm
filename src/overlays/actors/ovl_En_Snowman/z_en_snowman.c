@@ -54,7 +54,7 @@ Gfx* D_80B19A94[] = { 0x06004400, 0x060010B0, 0x06004400 };
 
 Gfx* D_80B19AA0[] = { 0x06005CB0, 0x06006190, 0x06006620 };
 
-static InitChainEntry sInitChain[] = {
+InitChainEntry sInitChain[] = {
     ICHAIN_S8(hintId, 20, ICHAIN_CONTINUE),
     ICHAIN_F32(targetArrowOffset, 3000, ICHAIN_CONTINUE),
     ICHAIN_F32_DIV1000(gravity, -1000, ICHAIN_STOP),
@@ -81,12 +81,12 @@ void EnSnowman_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.params &= 7;
 
     if (this->actor.params < 3) {
-        SkelAnime_InitSV(globalCtx, &this->skelAnime, &D_060045A0, &D_0600554C, &this->jointTable, &this->morphTable,
+        SkelAnime_InitSV(globalCtx, &this->skelAnime, &D_060045A0, &D_0600554C, this->jointTable, this->morphTable,
                          12);
-        SkelAnime_InitSV(globalCtx, &this->skelAnime2, &D_06004A90, &D_060046D8, &this->jointTable2, &this->morphTable2,
+        SkelAnime_InitSV(globalCtx, &this->skelAnime2, &D_06004A90, &D_060046D8, this->jointTable2, this->morphTable2,
                          3);
         CollisionCheck_SetInfo(&this->actor.colChkInfo, sDamageTable, &sColChkInfoInit);
-        Collider_InitAndSetCylinder(globalCtx, &this->collider, &this->actor, sCylinderInit);
+        Collider_InitAndSetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
 
         if (this->actor.params == 1) {
             this->actor.flags |= 0x400;
@@ -133,7 +133,7 @@ void EnSnowman_Init(Actor* thisx, GlobalContext* globalCtx) {
         ActorPlayer* player = PLAYER;
 
         this->actor.flags &= -2;
-        Collider_InitAndSetCylinder(globalCtx, &this->collider, &this->actor, sSnowballCylinderInit);
+        Collider_InitAndSetCylinder(globalCtx, &this->collider, &this->actor, &sSnowballCylinderInit);
         this->actor.world.rot.y = Actor_YawBetweenActors(&this->actor, &player->base);
 
         this->actor.velocity.y = -5.0f + (Actor_XZDistanceBetweenActors(&this->actor, &player->base) * 0.035f);
@@ -173,7 +173,11 @@ void EnSnowman_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-#pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/EnSnowman_Destroy.asm")
+void EnSnowman_Destroy(Actor *thisx, GlobalContext *globalCtx) {
+    EnSnowman* this = THIS;
+
+    Collider_DestroyCylinder(globalCtx, &this->collider);
+}
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B16FC0.asm")
 
@@ -200,6 +204,7 @@ Vec3f D_80B19ADC[] = {
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B179D0.asm")
 
+void func_80B17A58(EnSnowman* this, GlobalContext* globalCtx);
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B17A58.asm")
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B17CE8.asm")
@@ -232,10 +237,12 @@ Vec3f D_80B19ADC[] = {
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B18908.asm")
 
+void func_80B189C4(EnSnowman* this, GlobalContext* globalCtx);
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B189C4.asm")
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B189D4.asm")
 
+void func_80B18A04(EnSnowman* this, GlobalContext* globalCtx);
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B18A04.asm")
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B18A28.asm")
@@ -246,9 +253,70 @@ Vec3f D_80B19ADC[] = {
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B18C7C.asm")
 
+void func_80B18F50(EnSnowman* this, GlobalContext* globalCtx);
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B18F50.asm")
 
-#pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/EnSnowman_Update.asm")
+// #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/EnSnowman_Update.asm")
+void EnSnowman_Update(Actor *thisx, GlobalContext *globalCtx) {
+    EnSnowman* this = THIS;
+    s32 pad;
+    f32 wallCheckRadius;
+
+    if (this->actionFunc != func_80B189C4) {
+        if (this->timer2 != 0) {
+            this->timer2--;
+        }
+
+        func_80B18F50(this, globalCtx);
+        this->actionFunc(this, globalCtx);
+        
+        if (this->actionFunc != func_80B18A04) {
+            Actor_SetVelocityAndMoveYRotationAndGravity(&this->actor);
+            
+            if ((this->actor.params == 1) && (this->actionFunc == func_80B17A58)) {
+                wallCheckRadius = (this->skelAnime.animCurrentFrame * 0.016666668f) + 1.0f;
+                wallCheckRadius = CLAMP_MAX(wallCheckRadius, 1.3f);
+                wallCheckRadius *= this->collider.dim.radius;
+            } else {
+                wallCheckRadius = this->collider.dim.radius;
+            }
+
+            func_800B78B8(globalCtx, &this->actor, 30.0f, wallCheckRadius, 0.0f, 0x1D);
+
+            if ((this->actor.floorPoly != NULL) && ((this->actor.floorPoly->normal.y * 0.00003051851f) < 0.7f)) {
+                Math_Vec3f_Copy(&this->actor.world.pos, &this->actor.prevPos);
+                
+                if (this->unk_28A == 0) {
+                    this->aimAngleY = Math_FAtan2F(this->actor.floorPoly->normal.z * 0.00003051851f, this->actor.floorPoly->normal.x * 0.00003051851f);
+                    this->unk_28A = 1;
+                }
+            } else {
+                func_800BE3D0(&this->actor, this->actor.shape.rot.y, &this->actor.shape);
+            }
+
+            Collider_UpdateCylinder(&this->actor, &this->collider);
+            
+            if (this->collider.base.acFlags & 1) {
+                CollisionCheck_SetAC(globalCtx, &globalCtx->colCheckCtx, &this->collider.base);
+            }
+
+            CollisionCheck_SetOC(globalCtx, &globalCtx->colCheckCtx, &this->collider.base);
+            
+            if (this->actor.draw == EnSnowman_Draw) {
+                Actor_SetHeight(thisx, this->actor.scale.y * 1800.0f);
+            } else {
+                Actor_SetHeight(thisx, this->actor.scale.y * 720.0f);
+            }
+
+            if (this->effAlpha > 0.0f) {
+                Math_StepToF(&this->effAlpha, 0.0f, 0.05f);
+
+                this->effScale = (this->effAlpha + 1.0f) * 0.275f;
+                this->effScale = CLAMP_MAX(this->effScale, 0.55f);
+            }
+        }
+    }
+}
 
 #pragma GLOBAL_ASM("./asm/non_matchings/overlays/ovl_En_Snowman_0x80B16B00/func_80B19474.asm")
 

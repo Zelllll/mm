@@ -908,7 +908,7 @@ void func_800BE03C(GlobalContext* globalCtx, Gfx* dl);
 // void func_800BE258(void);
 // void func_800BE2B8(void);
 // void func_800BE33C(void);
-// void func_800BE3D0(void);
+void func_800BE3D0(Actor* actor, s16 angle, ActorShape* shape);
 // void func_800BE504(void);
 // void func_800BE568(void);
 // void func_800BE5CC(void);
