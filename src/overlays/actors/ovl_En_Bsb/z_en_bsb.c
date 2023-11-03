@@ -165,22 +165,29 @@ ActorInit En_Bsb_InitVars = {
 extern UNK_TYPE D_06000C50;
 extern UNK_TYPE D_06004894;
 
-AnimationHeader* D_80C0FA20[] = {
-    (AnimationHeader*)0x060086BC, (AnimationHeader*)0x0600CD88, (AnimationHeader*)0x06000400,
-    (AnimationHeader*)0x060065D8, (AnimationHeader*)0x06000FF0, (AnimationHeader*)0x06000C50,
-    (AnimationHeader*)0x06006C48, (AnimationHeader*)0x06001390, (AnimationHeader*)0x06002AF4,
-    (AnimationHeader*)0x06002590, (AnimationHeader*)0x06007120, (AnimationHeader*)0x060043A4,
-    (AnimationHeader*)0x06007B18, (AnimationHeader*)0x06001CD8, (AnimationHeader*)0x06003E1C,
-    (AnimationHeader*)0x06003238, (AnimationHeader*)0x0600606C, (AnimationHeader*)0x06005440,
-    (AnimationHeader*)0x06004E2C, (AnimationHeader*)0x06004894, (AnimationHeader*)0x06004208,
-    (AnimationHeader*)0x0600D3CC, (AnimationHeader*)0x06004510, (AnimationHeader*)0x06001F90,
-    (AnimationHeader*)0x0600C790,
-};
+// void mode_anime_set(EnBsb* this, int i);
+void func_80C0B290(EnBsb* this, s32 arg1) {
+    static AnimationHeader* D_80C0FA20[] = {
+        (AnimationHeader*)0x060086BC, (AnimationHeader*)0x0600CD88, (AnimationHeader*)0x06000400,
+        (AnimationHeader*)0x060065D8, (AnimationHeader*)0x06000FF0, (AnimationHeader*)0x06000C50,
+        (AnimationHeader*)0x06006C48, (AnimationHeader*)0x06001390, (AnimationHeader*)0x06002AF4,
+        (AnimationHeader*)0x06002590, (AnimationHeader*)0x06007120, (AnimationHeader*)0x060043A4,
+        (AnimationHeader*)0x06007B18, (AnimationHeader*)0x06001CD8, (AnimationHeader*)0x06003E1C,
+        (AnimationHeader*)0x06003238, (AnimationHeader*)0x0600606C, (AnimationHeader*)0x06005440,
+        (AnimationHeader*)0x06004E2C, (AnimationHeader*)0x06004894, (AnimationHeader*)0x06004208,
+        (AnimationHeader*)0x0600D3CC, (AnimationHeader*)0x06004510, (AnimationHeader*)0x06001F90,
+        (AnimationHeader*)0x0600C790,
+    };
+    static u8 D_80C0FA84[] = {
+        0x02, 0x00, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x02, 0x02, 0x00, 0x02, 0x00, 0x00,
+        0x02, 0x00, 0x02, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00,
+    };
 
-u8 D_80C0FA84[] = {
-    0x02, 0x00, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x02, 0x02, 0x00, 0x02, 0x00, 0x00,
-    0x02, 0x00, 0x02, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00,
-};
+    this->c_change_flag = arg1;
+    this->end_frame = Animation_GetLastFrame((void*)D_80C0FA20[arg1]);
+    Animation_Change(&this->skelAnime, D_80C0FA20[this->c_change_flag], 1.0f, 0.0f, this->end_frame,
+                     D_80C0FA84[this->c_change_flag], -2.0f);
+}
 
 u32 D_80C0FAA0[] = {
     0x00000000,
@@ -207,14 +214,6 @@ u32 D_80C0FAC0[] = {
 u32 D_80C0FAC8[] = {
     0xC2A00000, 0x43ED8000, 0xC511A000, 0x00000000, 0x00000000, 0x00000000,
 };
-
-// void mode_anime_set(EnBsb* this, int i);
-void func_80C0B290(EnBsb* this, s32 arg1) {
-    this->c_change_flag = arg1;
-    this->end_frame = Animation_GetLastFrame((void*)D_80C0FA20[arg1]);
-    Animation_Change(&this->skelAnime, D_80C0FA20[this->c_change_flag], 1.0f, 0.0f, this->end_frame,
-                     D_80C0FA84[this->c_change_flag], -2.0f);
-}
 
 // void dust_ground_setx(PlayState* play, EnBsb* this, xyz_t* pos);
 void func_80C0B31C(PlayState* play, EnBsb* this, Vec3f* pos);
