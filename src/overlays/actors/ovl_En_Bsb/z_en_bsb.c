@@ -17,6 +17,9 @@ void EnBsb_Destroy(Actor* thisx, PlayState* play);
 void EnBsb_Update(Actor* thisx, PlayState* play);
 void EnBsb_Draw(Actor* thisx, PlayState* play);
 
+void func_80C0BF2C(EnBsb* this);
+void func_80C0E3B8(EnBsb* this);
+
 static f32 D_80C0F8D0 = 0.0f;
 
 // static ColliderJntSphElementInit sJntSphElementsInit[7] = {
@@ -189,17 +192,81 @@ void func_80C0B290(EnBsb* this, s32 arg1) {
                      D_80C0FA84[this->c_change_flag], -2.0f);
 }
 
-u32 D_80C0FAA0[] = {
-    0x00000000,
-    0x41000000,
-    0x00000000,
-};
+Vec3f D_80C0FAA0 = { 0.0f, 8.0f, 0.0f };
+Vec3f D_80C0FAAC = { 0.0f, -1.5f, 0.0f };
 
-u32 D_80C0FAAC[] = {
-    0x00000000,
-    0xBFC00000,
-    0x00000000,
-};
+// void dust_ground_setx(PlayState* play, EnBsb* this, xyz_t* pos);
+void func_80C0B31C(PlayState* play, EnBsb* this, Vec3f* pos);
+#pragma GLOBAL_ASM("asm/non_matchings/overlays/ovl_En_Bsb/func_80C0B31C.s")
+#if 0
+void func_80C0B31C(PlayState* play, EnBsb* this, Vec3f* pos) {
+    
+    //    xyz_t pos_w;
+//    xyz_t acc;
+//    xyz_t vec;
+//    xyz_t vec_w;
+//    xyz_t acc_w;
+//    float ang_w;
+//    float size;
+//    float wrk;
+//    short timer;
+//    int i;
+//    game_t* game;
+    
+    
+    Vec3f spCC;
+    Vec3f spC0;
+    Vec3f spB4;
+    f32 temp_fa0;
+    s32 i;
+    GameState* state = &play->state;
+
+    Vec3f D_80C0FAA0 = { 0.0f, 8.0f, 0.0f };
+    Vec3f D_80C0FAAC = { 0.0f, -1.5f, 0.0f };
+
+    temp_fa0 = (Rand_ZeroOne() - 0.5f) * 12.56f;
+
+    spCC.y = this->actor.floorHeight;
+    spCC.x = (Math_SinF(temp_fa0) * 5.0f) + pos->x;
+    spCC.z = (Math_CosF(temp_fa0) * 5.0f) + pos->z;
+
+    D_80C0FAAC.x = Rand_CenteredFloat(1.0f) * 0.5f;
+    D_80C0FAA0.z = Rand_CenteredFloat(1.0f) * 0.5f;
+    D_80C0FAA0.y += (Rand_ZeroOne() - 0.5f) * 15.0f;
+
+    EffectSsHahen_Spawn(play, &spCC, &D_80C0FAA0, &D_80C0FAAC, 0, (s32)((Rand_ZeroOne() * 5.0f) + 10.0f), -1,
+                        10, NULL);
+    func_800BBFB0(play, &spCC, 20.0f, 1, 300, 10, 5);
+
+    i = 0;
+    if (this->dust_flag == 0) {
+        this->dust_flag = 1;
+
+        do {
+            if (!(i & 1)) {
+                Math_Vec3f_Copy(&spCC, &this->leftFootPos);
+            } else {
+                Math_Vec3f_Copy(&spCC, &this->rightFootPos);
+            }
+
+            spCC.x += Rand_CenteredFloat(5.0f);
+            spCC.y += Rand_CenteredFloat(5.0f);
+            spCC.z += Rand_CenteredFloat(5.0f);
+
+            spC0.y = -1.0f;
+
+            spB4.x = (Rand_ZeroOne() - 0.5f) * 4.0f;
+            spB4.y = (Rand_ZeroOne() * 10.0f) + 4.0f;
+            spB4.z = (Rand_ZeroOne() - 0.5f) * 4.0f;
+
+            func_80C0F544(this, &spCC, &spB4, &spC0, (Rand_CenteredFloat(1.0f) * 0.002f) + 0.005f,
+                          (s16)((s32)Rand_ZeroFloat(10.0f) + 30));
+            i += 1;
+
+        } while (i != 10);
+    }
+}
+#endif
 
 u32 D_80C0FAB8[] = {
     0x2EE0D8F0,
@@ -215,12 +282,66 @@ u32 D_80C0FAC8[] = {
     0xC2A00000, 0x43ED8000, 0xC511A000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-// void dust_ground_setx(PlayState* play, EnBsb* this, xyz_t* pos);
-void func_80C0B31C(PlayState* play, EnBsb* this, Vec3f* pos);
-#pragma GLOBAL_ASM("asm/non_matchings/overlays/ovl_En_Bsb/func_80C0B31C.s")
-
 // void En_Bsb_actor_ct(ACTOR* thisx, game_t* game);
+// #pragma GLOBAL_ASM("asm/non_matchings/overlays/ovl_En_Bsb/EnBsb_Init.s")
+extern AnimationHeader D_060086BC;
+extern SkeletonHeader D_0600C3E0;
+
+#if 0
+void EnBsb_Init(Actor* thisx, PlayState* play) {
+    EnBsb* this = (EnBsb*)thisx;
+
+    EnBsb* var_s1;
+    s16 temp_v0;
+    s8 temp_v0_2;
+    s8 var_s0;
+
+    Actor_SetScale(&this->actor, 0.04f);
+    this->body_alpha = 0xFF;
+    this->actor.colChkInfo.mass = 0xFF;
+
+    if (this->actor.params & 0x8000) {
+        SkelAnime_Init(play, &this->skelAnime, &D_0600C3E0, &D_06004894, this->jointTable, this->morphTable,
+                       OBJECT_BSB_LIMB_MAX);
+        this->index = this->actor.params & 0xFF;
+        func_80C0E3B8(this);
+    } else {
+        this->actor.colChkInfo.damageTable = &D_80C0F9E0;
+        ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 0.0f);
+        SkelAnime_Init(play, &this->skelAnime, &D_0600C3E0, &D_060086BC, this->jointTable, this->morphTable,
+                       OBJECT_BSB_LIMB_MAX);
+
+        this->rail_index = (this->actor.params >> 7) & 0x1F;
+        this->start_bit = this->actor.params & 0x7F;
+        this->end_bit = this->actor.world.rot.z & 0x7F;
+        this->actor.colChkInfo.health = 24;
+        this->actor.hintId = TATL_HINT_ID_CAPTAIN_KEETA;
+        this->actor.gravity = -2.0f;
+
+        Collider_InitAndSetJntSph(play, &this->collider, &this->actor, &D_80C0F9D0, this->colliderElements);
+
+        if (this->rail_index == 0x1F) {
+            Actor_Kill(&this->actor);
+        } else {
+            for (var_s0 = this->actor.csId; var_s1 = this; var_s0 != -1; var_s1 += 2) {
+
+                var_s1->Event_now[0] = (s16)var_s0;
+                var_s0 = CutsceneManager_GetAdditionalCsId((s16)var_s0);
+            }
+
+            this->actor.targetMode = 10;
+
+            if (gSaveContext.save.saveInfo.weekEventReg[23] & 4) {
+                Actor_Kill(&this->actor);
+            } else {
+                func_80C0BF2C(this);
+            }
+        }
+    }
+}
+#else
 #pragma GLOBAL_ASM("asm/non_matchings/overlays/ovl_En_Bsb/EnBsb_Init.s")
+#endif
 
 // void En_Bsb_actor_dt(ACTOR* thisx, game_t* game);
 #pragma GLOBAL_ASM("asm/non_matchings/overlays/ovl_En_Bsb/EnBsb_Destroy.s")
