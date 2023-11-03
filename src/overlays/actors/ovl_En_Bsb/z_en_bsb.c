@@ -22,39 +22,96 @@ static f32 D_80C0F8D0 = 0.0f;
 // static ColliderJntSphElementInit sJntSphElementsInit[7] = {
 static ColliderJntSphElementInit D_80C0F8D4[7] = {
     {
-        { ELEMTYPE_UNK0, { 0x00000000, 0x00, 0x00 }, { 0xF7CFFFFF, 0x00, 0x00 }, TOUCH_NONE | TOUCH_SFX_NORMAL, BUMP_ON, OCELEM_ON, },
+        {
+            ELEMTYPE_UNK0,
+            { 0x00000000, 0x00, 0x00 },
+            { 0xF7CFFFFF, 0x00, 0x00 },
+            TOUCH_NONE | TOUCH_SFX_NORMAL,
+            BUMP_ON,
+            OCELEM_ON,
+        },
         { 10, { { 1000, 400, 0 }, 40 }, 100 },
     },
     {
-        { ELEMTYPE_UNK0, { 0xF7CFFFFF, 0x04, 0x08 }, { 0x00000000, 0x00, 0x00 }, TOUCH_ON | TOUCH_SFX_NORMAL, BUMP_ON, OCELEM_ON, },
+        {
+            ELEMTYPE_UNK0,
+            { 0xF7CFFFFF, 0x04, 0x08 },
+            { 0x00000000, 0x00, 0x00 },
+            TOUCH_ON | TOUCH_SFX_NORMAL,
+            BUMP_ON,
+            OCELEM_ON,
+        },
         { 9, { { 0, 700, 200 }, 35 }, 100 },
     },
     {
-        { ELEMTYPE_UNK0, { 0x00000000, 0x00, 0x00 }, { 0xF7CFFFFF, 0x00, 0x00 }, TOUCH_NONE | TOUCH_SFX_NORMAL, BUMP_ON, OCELEM_ON, },
+        {
+            ELEMTYPE_UNK0,
+            { 0x00000000, 0x00, 0x00 },
+            { 0xF7CFFFFF, 0x00, 0x00 },
+            TOUCH_NONE | TOUCH_SFX_NORMAL,
+            BUMP_ON,
+            OCELEM_ON,
+        },
         { 6, { { 100, 600, 0 }, 35 }, 100 },
     },
     {
-        { ELEMTYPE_UNK0, { 0x00000000, 0x00, 0x00 }, { 0xF7CFFFFF, 0x00, 0x00 }, TOUCH_NONE | TOUCH_SFX_NORMAL, BUMP_ON, OCELEM_NONE, },
+        {
+            ELEMTYPE_UNK0,
+            { 0x00000000, 0x00, 0x00 },
+            { 0xF7CFFFFF, 0x00, 0x00 },
+            TOUCH_NONE | TOUCH_SFX_NORMAL,
+            BUMP_ON,
+            OCELEM_NONE,
+        },
         { 3, { { 400, 200, 0 }, 40 }, 100 },
     },
     {
-        { ELEMTYPE_UNK0, { 0x00000000, 0x00, 0x00 }, { 0xF7CFFFFF, 0x00, 0x00 }, TOUCH_NONE | TOUCH_SFX_NORMAL, BUMP_ON, OCELEM_ON, },
+        {
+            ELEMTYPE_UNK0,
+            { 0x00000000, 0x00, 0x00 },
+            { 0xF7CFFFFF, 0x00, 0x00 },
+            TOUCH_NONE | TOUCH_SFX_NORMAL,
+            BUMP_ON,
+            OCELEM_ON,
+        },
         { 13, { { 700, -100, 0 }, 35 }, 100 },
     },
     {
-        { ELEMTYPE_UNK0, { 0x00000000, 0x00, 0x00 }, { 0xF7CFFFFF, 0x00, 0x00 }, TOUCH_NONE | TOUCH_SFX_NORMAL, BUMP_ON, OCELEM_ON, },
+        {
+            ELEMTYPE_UNK0,
+            { 0x00000000, 0x00, 0x00 },
+            { 0xF7CFFFFF, 0x00, 0x00 },
+            TOUCH_NONE | TOUCH_SFX_NORMAL,
+            BUMP_ON,
+            OCELEM_ON,
+        },
         { 16, { { 200, 300, 0 }, 30 }, 100 },
     },
     {
-        { ELEMTYPE_UNK0, { 0x00000000, 0x00, 0x00 }, { 0xF7CFFFFF, 0x00, 0x00 }, TOUCH_NONE | TOUCH_SFX_NORMAL, BUMP_ON, OCELEM_ON, },
+        {
+            ELEMTYPE_UNK0,
+            { 0x00000000, 0x00, 0x00 },
+            { 0xF7CFFFFF, 0x00, 0x00 },
+            TOUCH_NONE | TOUCH_SFX_NORMAL,
+            BUMP_ON,
+            OCELEM_ON,
+        },
         { 19, { { 200, 300, 0 }, 30 }, 100 },
     },
 };
 
 // static ColliderJntSphInit sJntSphInit = {
 static ColliderJntSphInit D_80C0F9D0 = {
-    { COLTYPE_HIT6, AT_ON | AT_TYPE_ENEMY, AC_ON | AC_TYPE_PLAYER, OC1_ON | OC1_TYPE_PLAYER, OC2_TYPE_1, COLSHAPE_JNTSPH, },
-    ARRAY_COUNT(D_80C0F8D4), D_80C0F8D4, // sJntSphElementsInit,
+    {
+        COLTYPE_HIT6,
+        AT_ON | AT_TYPE_ENEMY,
+        AC_ON | AC_TYPE_PLAYER,
+        OC1_ON | OC1_TYPE_PLAYER,
+        OC2_TYPE_1,
+        COLSHAPE_JNTSPH,
+    },
+    ARRAY_COUNT(D_80C0F8D4),
+    D_80C0F8D4, // sJntSphElementsInit,
 };
 
 // static DamageTable sDamageTable = {
@@ -108,80 +165,56 @@ ActorInit En_Bsb_InitVars = {
 extern UNK_TYPE D_06000C50;
 extern UNK_TYPE D_06004894;
 
-
-u32 D_80C0FA20[] = {
-0x060086BC,
-0x0600CD88,
-0x06000400,
-0x060065D8,
-0x06000FF0,
-0x06000C50,
-0x06006C48,
-0x06001390,
-0x06002AF4,
-0x06002590,
-0x06007120,
-0x060043A4,
-0x06007B18,
-0x06001CD8,
-0x06003E1C,
-0x06003238,
-0x0600606C,
-0x06005440,
-0x06004E2C,
-0x06004894,
-0x06004208,
-0x0600D3CC,
-0x06004510,
-0x06001F90,
-0x0600C790,
+AnimationHeader* D_80C0FA20[] = {
+    (AnimationHeader*)0x060086BC, (AnimationHeader*)0x0600CD88, (AnimationHeader*)0x06000400,
+    (AnimationHeader*)0x060065D8, (AnimationHeader*)0x06000FF0, (AnimationHeader*)0x06000C50,
+    (AnimationHeader*)0x06006C48, (AnimationHeader*)0x06001390, (AnimationHeader*)0x06002AF4,
+    (AnimationHeader*)0x06002590, (AnimationHeader*)0x06007120, (AnimationHeader*)0x060043A4,
+    (AnimationHeader*)0x06007B18, (AnimationHeader*)0x06001CD8, (AnimationHeader*)0x06003E1C,
+    (AnimationHeader*)0x06003238, (AnimationHeader*)0x0600606C, (AnimationHeader*)0x06005440,
+    (AnimationHeader*)0x06004E2C, (AnimationHeader*)0x06004894, (AnimationHeader*)0x06004208,
+    (AnimationHeader*)0x0600D3CC, (AnimationHeader*)0x06004510, (AnimationHeader*)0x06001F90,
+    (AnimationHeader*)0x0600C790,
 };
 
-
-u32 D_80C0FA84[] = {
-0x02000200,
-0x00020000,
-0x02020002,
-0x00000200,
-0x02000200,
-0x00000202,
-0x02000000,
+u8 D_80C0FA84[] = {
+    0x02, 0x00, 0x02, 0x00, 0x00, 0x02, 0x00, 0x00, 0x02, 0x02, 0x00, 0x02, 0x00, 0x00,
+    0x02, 0x00, 0x02, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00,
 };
 
 u32 D_80C0FAA0[] = {
-0x00000000,
-0x41000000,
-0x00000000,
+    0x00000000,
+    0x41000000,
+    0x00000000,
 };
 
 u32 D_80C0FAAC[] = {
-0x00000000,
-0xBFC00000,
-0x00000000,
+    0x00000000,
+    0xBFC00000,
+    0x00000000,
 };
 
 u32 D_80C0FAB8[] = {
-0x2EE0D8F0,
-0xB5C80000,
+    0x2EE0D8F0,
+    0xB5C80000,
 };
 
 u32 D_80C0FAC0[] = {
-0xD8F02710,
-0xD8F00000,
+    0xD8F02710,
+    0xD8F00000,
 };
 
 u32 D_80C0FAC8[] = {
-0xC2A00000,
-0x43ED8000,
-0xC511A000,
-0x00000000,
-0x00000000,
-0x00000000,
+    0xC2A00000, 0x43ED8000, 0xC511A000, 0x00000000, 0x00000000, 0x00000000,
 };
 
 // void mode_anime_set(EnBsb* this, int i);
-void func_80C0B290(EnBsb* this, s32 arg1);
-#pragma GLOBAL_ASM("asm/non_matchings/overlays/ovl_En_Bsb/func_80C0B290.s")
+void func_80C0B290(EnBsb* this, s32 arg1) {
+    this->c_change_flag = arg1;
+    this->end_frame = Animation_GetLastFrame((void*)D_80C0FA20[arg1]);
+    Animation_Change(&this->skelAnime, D_80C0FA20[this->c_change_flag], 1.0f, 0.0f, this->end_frame,
+                     D_80C0FA84[this->c_change_flag], -2.0f);
+}
 
 // void dust_ground_setx(PlayState* play, EnBsb* this, xyz_t* pos);
 void func_80C0B31C(PlayState* play, EnBsb* this, Vec3f* pos);
